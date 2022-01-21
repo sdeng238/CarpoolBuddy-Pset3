@@ -10,7 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarpoolBuddyPset3">
         <activity
+            android:name=".CreateUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddVehicleActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VehiclesInfoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
