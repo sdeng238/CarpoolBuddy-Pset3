@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarpoolBuddyPset3">
         <activity
+            android:name=".UserTypeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VehicleProfileActivity"
+            android:exported="true" />
+        <activity
             android:name=".CreateUserActivity"
             android:exported="true" />
         <activity
@@ -19,10 +25,7 @@
             android:name=".VehiclesInfoActivity"
             android:exported="true" />
         <activity
-            android:name=".ProfileActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".UserProfileActivity"
             android:exported="true" />
         <activity
             android:name=".AuthActivity"

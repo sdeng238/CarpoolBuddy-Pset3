@@ -7,4 +7,10 @@
         <item>Parent</item>
         <item>Alumni</item>
     </string-array>
+
+    <string-array name="vehicle_types">
+        <item>Electric car</item>
+        <item>Fossil fuel car</item>
+        <item>Motorcycle</item>
+    </string-array>
 </resources>

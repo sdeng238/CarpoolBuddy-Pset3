@@ -2,8 +2,78 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DFEFCD"
     tools:context=".VehiclesInfoActivity">
+
+    <TextView
+        android:id="@+id/chooseYourCarpoolBuddyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="32dp"
+        android:text="Choose your CARPOOL BUDDY!"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/roadImageView2"
+        android:layout_width="162dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="-35dp"
+        android:rotation="90"
+        android:rotationX="64"
+        android:rotationY="0"
+        app:layout_constraintStart_toEndOf="@+id/chooseYourCarpoolBuddyTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/road_black_bg" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="77dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#AEAEAE"
+        android:onClick="back"
+        android:text="back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseYourCarpoolBuddyTextView" />
+
+    <TextView
+        android:id="@+id/yourBalanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Your Balance: $"
+        android:textColor="#020202"
+        app:layout_constraintEnd_toStartOf="@+id/userBalanceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chooseYourCarpoolBuddyTextView" />
+
+    <TextView
+        android:id="@+id/userBalanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="-16dp"
+        android:text="0"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/chooseYourCarpoolBuddyTextView"
+        app:layout_constraintTop_toBottomOf="@+id/chooseYourCarpoolBuddyTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vehiclesRecView"
+        android:layout_width="350dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yourBalanceTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
