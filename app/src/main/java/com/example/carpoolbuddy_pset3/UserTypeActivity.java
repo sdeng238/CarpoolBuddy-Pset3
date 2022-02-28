@@ -24,6 +24,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * This class displays when a user initially creates their account. It requests for information
+ * according to the user's selected role.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class UserTypeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseAuth mAuth;
@@ -59,6 +67,15 @@ public class UserTypeActivity extends AppCompatActivity implements AdapterView.O
         nameEditText = findViewById(R.id.nameEditText);
     }
 
+    /**
+     * This method is the OnClick method of continueButton. It creates a User object of the specific
+     * user type specified by the user by selecting their role at school in the Spinner. It gathers
+     * information that is filled out by the user in the same activity as well as information from
+     * the current FirebaseUser logged in. It then saves the User object to Firebase then brings the
+     * user to UserProfileActivity.
+     *
+     * @param v The view in which continueButton is displayed.
+     */
     public void saveUserToFirebase(View v)
     {
         //create object of userType and add object to firebase
@@ -87,6 +104,7 @@ public class UserTypeActivity extends AppCompatActivity implements AdapterView.O
         startActivity(new Intent(getBaseContext(), UserProfileActivity.class));
     }
 
+    //sees which item in the spinner is selected
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
     {

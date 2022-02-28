@@ -31,6 +31,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class displays the recyclerView where all the open vehicles and/or the vehicles that are
+ * owned by the user currently signed in.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class VehiclesInfoActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -72,6 +80,10 @@ public class VehiclesInfoActivity extends AppCompatActivity {
                         //display user's balance
                         userBalanceTextView.setText(Double.toString(currUser.getBalance()));
                     }
+                }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "Fetch current user failed!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -156,15 +168,30 @@ public class VehiclesInfoActivity extends AppCompatActivity {
                         }
                     });
                 }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "Fetch user's vehicles failed!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
+    /**
+     * This method is the OnClick method for backButton. It brings the user back to UserProfileActivity.
+     *
+     * @param v The view in which backButton is displayed in.
+     */
     public void back(View v)
     {
         startActivity(new Intent(this, UserProfileActivity.class));
     }
 
+    /**
+     * This class holds the recyclerView's Adaptor.
+     *
+     * @author Shirley Deng
+     * @version 1.0
+     */
     public static class VehiclesAdapter extends RecyclerView.Adapter<VehicleViewHolder>
     {
         ArrayList<Vehicle> mData;
@@ -192,7 +219,12 @@ public class VehiclesInfoActivity extends AppCompatActivity {
         }
 
         @Override
-        //tell each holder what to display
+        /**
+         * This method tells each holder what to display. The holder displays information such as the
+         * vehicle's model, its owner's name, the remaining capacity and the vehicle image. It also
+         * controls whether to change the view's background colour to calming green depending on the
+         * whether the vehicle is a green vehicle.
+         */
         public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position)
         {
             //display info of the current vehicle
@@ -229,6 +261,14 @@ public class VehiclesInfoActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This class establishes the ViewHolder for the recyclerView. It initiates the TextViews and other
+     * attributes. It also detects whether the row is clicked and brings the user to the vehicle's
+     * VehicleProfileActivity so the user can check out the vehicle's information and potentially book it.
+     *
+     * @author Shirley Deng
+     * @version 1.0
+     */
     public static class VehicleViewHolder extends RecyclerView.ViewHolder
     {
         protected TextView modelNameText;

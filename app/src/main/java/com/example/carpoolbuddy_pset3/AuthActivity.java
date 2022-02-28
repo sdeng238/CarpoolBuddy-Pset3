@@ -30,6 +30,13 @@ import org.w3c.dom.Document;
 
 import java.lang.reflect.Array;
 
+/**
+ * This class authenticates the user and allows them to sign in/sign up.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class AuthActivity extends AppCompatActivity {
 
     //authenticate and get users
@@ -76,12 +83,23 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method creates and starts a sign in intent for Google Automatic sign in.
+     */
     private void googleSignIn()
     {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    /**
+     * This method is provided by Google sign in integration.
+     * It gets the GoogleSignInAccount object after the user signs in via Google automatic sign in.
+     *
+     * @param requestCode The code that is requested to Google.
+     * @param resultCode The code that Google returned for the request.
+     * @param data The intent that brings the user to the Google sign in page.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -90,14 +108,18 @@ public class AuthActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN)
         {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
     }
 
-    //handle sign in result from Google sign in
+    /**
+     * This method takes in the GoogleSignInAccount and converts it into a GoogleSignInAccount object.
+     * Using that object, it is able to get the email address that was just signed into and checks if it is a
+     * CIS email, if yes, it signs the user in using Firebase email and password authentication.
+     *
+     * @param completedTask The account that has just been signed into via Google sign in.
+     */
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask)
     {
         try
@@ -117,13 +139,25 @@ public class AuthActivity extends AppCompatActivity {
                             if(task.getResult().getDocuments().size() == 0)
                             {
                                 //sign up if not already exist
-                                signUpWithEmailAndPassword(account.getEmail(), "123456");
+                                //only allow CIS email to sign up
+                                if(account.getEmail().contains("cis") && account.getEmail().contains("edu"))
+                                {
+                                    signUpWithEmailAndPassword(account.getEmail(), "123456");
+                                }
+                                else
+                                {
+                                    Toast.makeText(getBaseContext(), "You are unable to sign up because you are not a CIS user", Toast.LENGTH_SHORT).show();
+                                }
                             }
                             else
                             {
                                 //sign in if already exist
                                 signInWithEmailAndPassword(account.getEmail(), "123456");
                             }
+                        }
+                        else
+                        {
+                            Toast.makeText(getBaseContext(), "Cannot fetch users!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -137,7 +171,13 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    //signs in using email and password
+    /**
+     * This method takes in the user's email address and password entered and
+     * signs them in via Firebase email and password authentication.
+     *
+     * @param email The user's email address.
+     * @param password The user's password.
+     */
     public void signInWithEmailAndPassword(String email, String password)
     {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
@@ -154,7 +194,13 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
-    //signs up using email and password
+    /**
+     * This method takes in the user's email address and password entered and
+     * creates their account using Firebase email and password authentication.
+     *
+     * @param email The user's email address.
+     * @param password The user's password.
+     */
     public void signUpWithEmailAndPassword(String email, String password)
     {
         //creates user
@@ -174,11 +220,21 @@ public class AuthActivity extends AppCompatActivity {
                     //bring user to UserTypeActivity to fill out school roles and corresponding info
                     startActivity(new Intent(getBaseContext(), UserTypeActivity.class));
                 }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "Cannot sign in!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    //OnClick method for sign in button
+    /**
+     * This method is the OnClick method of the signInButton. It takes in the user's email address
+     * and password entered in the corresponding text boxes and calls the signInWithEmailAndPassword
+     * method to sign the user in.
+     *
+     * @param v The context of the view in which signInButton is displayed in.
+     */
     public void signIn(View v)
     {
         String emailString = emailField.getText().toString();
@@ -187,12 +243,27 @@ public class AuthActivity extends AppCompatActivity {
         signInWithEmailAndPassword(emailString, passwordString);
     }
 
-    //OnClick method for sign up button
+    /**
+     * This method is the OnClick method of the signUpButton. It takes in the user's email address
+     * and password entered in the corresponding text boxes and checks if the user's email is a CIS
+     * email before calling the signUpWithEmailAndPassword method to create the user's Firebase
+     * authentication account.
+     *
+     * @param v The context of the view in which signUpButton is displayed in.
+     */
     public void signUp(View v)
     {
         String emailString = emailField.getText().toString();
         String passwordString = passwordField.getText().toString();
 
-        signUpWithEmailAndPassword(emailString, passwordString);
+        //only allow cis email to sign up
+        if(emailString.contains("cis") && emailString.contains("edu"))
+        {
+            signUpWithEmailAndPassword(emailString, passwordString);
+        }
+        else
+        {
+            Toast.makeText(this, "You are unable to sign up because you are not a CIS user", Toast.LENGTH_SHORT).show();
+        }
     }
 }

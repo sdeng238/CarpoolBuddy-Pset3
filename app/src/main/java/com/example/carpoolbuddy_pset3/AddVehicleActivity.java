@@ -25,6 +25,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.UUID;
 
+/**
+ * This class allows users to fill in their vehicle's information and adding it to Firebase.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class AddVehicleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private FirebaseAuth mAuth;
@@ -79,6 +86,17 @@ public class AddVehicleActivity extends AppCompatActivity implements AdapterView
     }
 
     //checks if the vehicle info is valid
+
+    /**
+     * This method checks if the vehicle's model entered in the text box is empty and checks if the
+     * vehicle's capacity and base price entered in the corresponding text boxes are positive. It
+     * returns true if the information are all checked and valid.
+     *
+     * @param modelString The String of the vehicle's model filled in by the user in the text box.
+     * @param capacityInt The int of the vehicle's capacity filled in by the user in the text box.
+     * @param basePriceDouble The double of the vehicle's base price filled in by the user in the text box.
+     * @return true or false depending on whether the information passed in are checked and valid.
+     */
     public boolean formValid(String modelString, int capacityInt, double basePriceDouble)
     {
         if((modelString != null) && (capacityInt > 0) && (basePriceDouble > 0))
@@ -89,6 +107,14 @@ public class AddVehicleActivity extends AppCompatActivity implements AdapterView
         return false;
     }
 
+    /**
+     * This method is the OnClick method for addNewVehicleButton. It fetches the current user from
+     * Firebase and checks if the information filled out is valid using the formValid method, then it
+     * creates a Vehicle object of the specific vehicleType and calls the checkAddNewVehicle method
+     * to update Firebase.
+     *
+     * @param v The view in which addNewVehicleButton is displayed in.
+     */
     public void addNewVehicle(View v)
     {
         String modelString = modelField.getText().toString();
@@ -135,6 +161,7 @@ public class AddVehicleActivity extends AppCompatActivity implements AdapterView
                 else
                 {
                     Log.w("FETCH USER", "fetchUser:failure" + task.getException());
+                    Toast.makeText(getBaseContext(), "Cannot fetch current user!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -154,6 +181,14 @@ public class AddVehicleActivity extends AppCompatActivity implements AdapterView
     }
 
     //saves and updates firebase documents with newly created vehicle
+
+    /**
+     * This method takes in the Vehicle object created from the vehicle's information filled out and
+     * checks if it is null. If not, it updates Firebase by adding the vehicleID to the ownedVehicles
+     * collection, the current user's ownedVehicles ArrayList and the vehicles collection.
+     *
+     * @param newVehicle The object that is created using the vehicle's information filled out by the user.
+     */
     public void checkAddNewVehicle(Vehicle newVehicle)
     {
         //check if vehicle is null
@@ -210,7 +245,10 @@ public class AddVehicleActivity extends AppCompatActivity implements AdapterView
         }
     }
 
-    //brings user to vehiclesInfoActivity
+    /**
+     * This method brings the user to vehiclesInfoActivity so the user can see the vehicles displayed
+     * in the recyclerView.
+     */
     public void goToVehiclesInfoActivity()
     {
         Intent goToVehiclesInfoActivity = new Intent(this, VehiclesInfoActivity.class);

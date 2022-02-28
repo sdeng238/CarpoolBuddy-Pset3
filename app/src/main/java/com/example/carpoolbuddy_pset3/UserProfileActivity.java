@@ -16,6 +16,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+/**
+ * This class is the app's home page. It displays information like the user's name, balance and allows
+ * users to navigate to AddVehicleActivity and VehiclesInfoActivity via buttons. It also provides a
+ * signOutButton for the user to sign out of their account.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class UserProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -54,6 +63,11 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method is the OnClick method for vehicleInfoButton. It brings the user to VehiclesInfoActivity.
+     *
+     * @param v The view in which vehicleInfoButton is displayed in.
+     */
     //bring user to VehiclesInfoActivity
     public void goToVehiclesInfoActivity(View v)
     {
@@ -61,6 +75,11 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(goToVehiclesInfoActivity);
     }
 
+    /**
+     * This method is the OnClick method for addVehicleButton. It brings the user to AddVehicleActivity.
+     *
+     * @param v The view in which addVehicleButton is displayed in.
+     */
     //bring user to AddVehicleActivity
     public void goToAddVehicleActivity(View v)
     {
@@ -68,6 +87,12 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(goToAddVehicleActivity);
     }
 
+    /**
+     * This method is the OnClick method for signOutButton. It signs the user out of their Firebase
+     * authentication account and brings them back to AuthActivity.
+     *
+     * @param v The view in which signOutButton is displayed in.
+     */
     //signs user out
     public void signOut(View v)
     {

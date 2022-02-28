@@ -24,6 +24,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Text;
 
+/**
+ * This class displays the information of the vehicle that has been clicked into from the recyclerView
+ * in VehiclesInfoActivity. If the user is the owner of the vehicle, they can open or close the vehicle
+ * to control whether it is available for booking. If not, the user can book a ride with the vehicle.
+ *
+ * @author Shirley Deng
+ * @version 1.0
+ */
+
 public class VehicleProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -116,6 +125,8 @@ public class VehicleProfileActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Vehicle opened", Toast.LENGTH_SHORT).show();
                 open = true;
                 vehicleOpenSwitch.setText("Open");
+
+                //fetch current vehicle
                 firestore.collection("vehicles").whereEqualTo("vehicleID", vehicleInfo.getVehicleID()).get().addOnCompleteListener(task -> {
                     if(task.isSuccessful())
                     {
@@ -123,6 +134,9 @@ public class VehicleProfileActivity extends AppCompatActivity {
                         {
                             firestore.collection("vehicles").document(ds.getId()).update("open", true);
                         }
+                    }
+                    else {
+                        Toast.makeText(getBaseContext(), "Cannot fetch current vehicle!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -132,6 +146,8 @@ public class VehicleProfileActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Vehicle closed", Toast.LENGTH_SHORT).show();
                 open = false;
                 vehicleOpenSwitch.setText("Closed");
+
+                //fetch current vehicle
                 firestore.collection("vehicles").whereEqualTo("vehicleID", vehicleInfo.getVehicleID()).get().addOnCompleteListener(task -> {
                     if(task.isSuccessful())
                     {
@@ -140,6 +156,10 @@ public class VehicleProfileActivity extends AppCompatActivity {
                             firestore.collection("vehicles").document(ds.getId()).update("open", false);
                         }
                     }
+                    else
+                    {
+                        Toast.makeText(getBaseContext(), "Cannot fetch current vehicle!", Toast.LENGTH_SHORT).show();
+                    }
                 });
             }
         });
@@ -147,6 +167,12 @@ public class VehicleProfileActivity extends AppCompatActivity {
         setUpButtons();
     }
 
+    /**
+     * This method checks whether the user is the owner of the vehicle and displays the relevant
+     * functionalities available to the user: if the user is the owner, the price of the vehicle and
+     * the bookRideButton are hidden and the vehicleOpenSwitch is displayed. If the user is not the
+     * owner, the opposite are displayed and hidden respectively.
+     */
     public void setUpButtons()
     {
         //fetch current user
@@ -218,10 +244,19 @@ public class VehicleProfileActivity extends AppCompatActivity {
             else
             {
                 Log.w("FETCH CURRENT USER", "fetchCurrentUser:failure", task.getException());
+                Toast.makeText(getBaseContext(), "Cannot fetch current user!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * This method updates Firebase once the vehicle has been booked for a ride. It decreases the vehicle
+     * capacity by 1, adds the user's UID to the ridersUID ArrayList in the vehicle, decreases the user's
+     * balance by the booking price paid and increases the owner's balance by the booking price received
+     * from the user.
+     *
+     * @param currUser The User object of the user that is signed in currently.
+     */
     public void bookRide(User currUser)
     {
         //get bookingPrice of the current vehicle
